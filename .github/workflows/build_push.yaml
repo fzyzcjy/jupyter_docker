@@ -16,6 +16,12 @@ jobs:
     name: 'Primary'
     runs-on: ubuntu-latest
     steps:
+      - name: Maximize build space
+        uses: easimon/maximize-build-space@master
+        with:
+          root-reserve-mb: 512
+          swap-size-mb: 1024
+          remove-dotnet: 'true'
       - uses: catchpoint/workflow-telemetry-action@v1
         with:
           comment_on_pr: false
