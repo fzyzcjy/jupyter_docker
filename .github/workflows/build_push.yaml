@@ -1,0 +1,30 @@
+# also ref: https://github.com/jupyter/docker-stacks/blob/main/.github/workflows/docker.yml
+name: Build and push
+
+on:
+  push:
+    branches:
+      - master
+  workflow_dispatch: { }
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  primary:
+    name: 'Primary'
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - run: cd image && docker build --rm --force-rm --tag fzyzcjy/jupyter_docker:v1.0.1 .
+        env:
+          BUILDKIT_PROGRESS: plain # Full logs for CI build
+
+      - run: cd image && docker build --rm --force-rm --tag fzyzcjy/jupyter_docker:v1.0.1 .
+        env:
+          BUILDKIT_PROGRESS: plain # Full logs for CI build
